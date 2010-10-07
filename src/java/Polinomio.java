@@ -20,9 +20,9 @@ public class Polinomio {
 			BufferedReader bf = new BufferedReader(new FileReader(fileName));
 			String str;
 			while ((str = bf.readLine())!=null) {
-				String[] terminos = str.split("\t");
+				String[] terminos = str.split('\t');
 				for(int i = 0; i < terminos.length; i++) {
-					String[] ve = terminos[i].split("^");
+					String[] ve = terminos[i].split('^');
 					Termino termino = new Termino();
 					termino.setValor(Integer.parseInt(ve[0]));
 					termino.setExponente(Integer.parseInt(ve[1]));
