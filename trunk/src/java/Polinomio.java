@@ -1,5 +1,9 @@
 package java;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -11,8 +15,25 @@ public class Polinomio {
 		terminos = new Vector<Termino>();
 	}
 	 
-	public void makePolinomioFromFile() {
-	 
+	public void makePolinomioFromFile(String fileName) {
+		try {
+			BufferedReader bf = new BufferedReader(new FileReader(fileName));
+			String str;
+			while ((str = bf.readLine())!=null) {
+				String[] terminos = str.split("\t");
+				for(int i = 0; i < terminos.length; i++) {
+					String[] ve = terminos[i].split("^");
+					Termino termino = new Termino();
+					termino.setValor(Integer.parseInt(ve[0]));
+					termino.setExponente(Integer.parseInt(ve[1]));
+				}
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 	 
 	public void verPolinomio() {
