@@ -39,11 +39,15 @@ public class Polinomio {
 		return null;
 	}
 	 
-	public Polinomio estaordenado(Polinomio p) {
-		return null;
+	public boolean estaOrdenado(Polinomio p) {
+		return true;
 	}
 	 
 	public int grado(Polinomio p) {
+		if (estaOrdenado(p)) {
+			return p.gerTerminos().firstElement().getExponente();
+		}
+						
 		return 0;
 	}
 	
@@ -55,6 +59,9 @@ public class Polinomio {
 		}
 		return -1;
 	}
-	 //soy un comentario
+	
+	public Vector<Termino> gerTerminos()  {
+		return terminos;
+	}
 }
  
