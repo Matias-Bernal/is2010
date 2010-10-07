@@ -26,6 +26,7 @@ public class Polinomio {
 					Termino termino = new Termino();
 					termino.setValor(Integer.parseInt(ve[0]));
 					termino.setExponente(Integer.parseInt(ve[1]));
+					terminos.add(termino); //<== FALTO AGREGAR EL TERMINO AL VECTOR
 				}
 			}
 		} catch (FileNotFoundException e) {
