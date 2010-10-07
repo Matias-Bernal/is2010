@@ -13,20 +13,20 @@ public class Termino {
 	public void setValor(int v) {
 		valor = v;
 	}
-	 
+
 	public int getExponente() {
 		return exponente;
 	}
-	 
+ 
 	public void setExponente(int e) {
 		exponente = e;
 	}
-	
+
 	public String toString(){
 		if (valor>=0){
-			return ("+",valor,"^",exponente);
+			return ("+"+valor+"^"+exponente);
 		}else{
-			return ("-",valor,"^",exponente);
+			return ("-"+valor+"^"+exponente);
 		}
 	}
 }
