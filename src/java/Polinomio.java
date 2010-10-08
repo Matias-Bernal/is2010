@@ -20,7 +20,7 @@ public class Polinomio {
 			BufferedReader bf = new BufferedReader(new FileReader(fileName));
 			String str;
 			while ((str = bf.readLine())!=null) {
-				String[] terminos = str.split("\t");
+				String[] terminos = str.split(String.valueOf('\t')); //<= El tabulador es un caracter si lo pones asi "\t" te lo va a tomar como la cadena no el tabulador 
 				for(int i = 0; i < terminos.length; i++) {
 					String[] ve = terminos[i].split("^");
 					addTermPolinomio(Integer.parseInt(ve[0]), Integer.parseInt(ve[1]));
