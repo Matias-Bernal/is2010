@@ -69,7 +69,7 @@ public class Polinomio {
 		while ((i < terminos.size()-1) && ordenado){
 			termino1 = terminos.elementAt(i);
 			termino2 = terminos.elementAt(i+1);
-			ordenado += (termino1.getExponente()<=termino2.getExponente());
+			ordenado = ordenado && (termino1.getExponente()<=termino2.getExponente());
 			i++;
 		}
 		return ordenado;
