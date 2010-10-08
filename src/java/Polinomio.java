@@ -61,12 +61,12 @@ public class Polinomio {
 	public boolean estaOrdenado(Polinomio p) {
 		boolean ordenado = true;
 		int i = 0;
-		Termino termino1 = new Termino();
-		Termino termino2 = new Termino();
+		int termino1;
+		int termino2;
 		while ((i < terminos.size()-1) && ordenado){
-			termino1 = terminos.elementAt(i);
-			termino2 = terminos.elementAt(i+1);
-			ordenado = ordenado && (termino1.getExponente()<=termino2.getExponente());
+			termino1 = terminos.elementAt(i).getExponente();
+			termino2 = terminos.elementAt(i+1).getExponente();
+			ordenado = ordenado && (termino1<=termino2);
 			i++;
 		}
 		return ordenado;
