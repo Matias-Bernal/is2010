@@ -62,9 +62,19 @@ public class Polinomio {
 	}
 	 
 	public boolean estaOrdenado(Polinomio p) {
-		return true;
+		boolean ordenado = true;
+		int i = 0;
+		Termino termino1 = new Termino();
+		Termino termino2 = new Termino();
+		while ((i < terminos.size()-1) && ordenado){
+			termino1 = terminos.elementAt(i);
+			termino2 = terminos.elementAt(i+1);
+			ordenado += (termino1.getExponente()<=termino2.getExponente());
+			i++;
+		}
+		return ordenado;
 	}
-	 
+
 	public int grado(Polinomio p) {
 		if (estaOrdenado(p)) {
 			return p.gerTerminos().firstElement().getExponente();
