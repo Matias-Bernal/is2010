@@ -1,15 +1,13 @@
-package java;
+package fuentes;
 
-public class Termino {
- 
+public class Termino{
 	private int valor;
 	private int exponente;
-
 
 	public int getValor() {
 		return valor;
 	}
- 
+
 	public void setValor(int v) {
 		valor = v;
 	}
@@ -17,16 +15,16 @@ public class Termino {
 	public int getExponente() {
 		return exponente;
 	}
- 
+
 	public void setExponente(int e) {
 		exponente = e;
 	}
 
 	public String toString(){
 		if (valor>=0){
-			return ("+"+valor+"^"+exponente);
+			return (valor+"X"+"^"+exponente);
 		}else{
-			return ("-"+valor+"^"+exponente);
+			return (valor+"X"+"^"+exponente);
 		}
 	}
 }
