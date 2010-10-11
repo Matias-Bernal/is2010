@@ -39,46 +39,95 @@ public class Polinomio {
         }
     }
 
-	public void verPolinomio() {
+	public void verPolinomio(){
+		int i = 0;
+		int valor = 0;
+		int exponete = 0;
 		String res = "";
-		int i=0;
+		Termino term = new Termino();
 		while (i<terminos.size()){
-			if (i==0){ // primer valor si es positivo no muestro el signo
-				res += terminos.elementAt(i).getValor();
-			}else{
-				if (terminos.elementAt(i).getValor()>1){ // si el valor es mayor a 1 muestro +valor^exponente
-					if (terminos.elementAt(i).getExponente()==1){ //+valorX^1 es igual que +valorX
-						res += "+"+terminos.elementAt(i).getValor()+"X";
+			term = terminos.elementAt(i);
+			exponete = term.getExponente();
+			valor = term.getValor();
+			switch (valor){
+			case 0:	break;
+			case 1:
+				switch(exponete){
+				case 0:
+					if (i!=0){
+						res += "+"+valor;
 					}else{
-						res += "+"+terminos.elementAt(i); // no era un 1
+						res += valor;
 					}
-				}else{
-					if (terminos.elementAt(i).getValor()<-1){ // si el valor es menor a -1 muestro -valor^exponete 
-						if (terminos.elementAt(i).getExponente()==1){// -valorX^1 es igual que -valorX
-							res += terminos.elementAt(i).getValor()+"X";
-						}else{
-							res += terminos.elementAt(i);
-						}
-					}else{// el valor entre [-1,1]
-						if(terminos.elementAt(i).getValor()==1){// +1X^exponete es igual que +X^exponente
-							if (terminos.elementAt(i).getExponente()==1){
-								res += "+X";
-							}else{
-								res += "+X^"+terminos.elementAt(i).getExponente();
-							}
-						}else{
-							if(terminos.elementAt(i).getValor()==-1){ // -1X^exponente es igual que -X^exponente
-								if (terminos.elementAt(i).getExponente()==1){
-									res += "-X";
-								}else{
-									res += "-X^"+terminos.elementAt(i).getExponente();
-								}
-							}else{ // sacar este else para no mostrar grados con 0 ej 0X^5
-								res+="+0X^"+terminos.elementAt(i).getExponente();
-							}
-						}	
+					break;
+				case 1:
+					if (i!=0){
+						res +="+X";
+					}else{
+						res +="X";
 					}
+					break;
+				default:
+					if (i!=0){
+						res +="+X^"+exponete;
+					}else{
+						res +="X^"+exponete;
+					}
+					break;
 				}
+				break;
+			case -1:
+				switch(exponete){
+				case 0:
+					res += valor;
+					break;
+				case 1:
+					res +="-X";
+					break;
+				default:
+					res +="-X^"+exponete;
+					break;
+				}
+				break;
+			default:
+				if(valor<-1){
+					switch(exponete){
+					case 0:
+						res += valor;
+						break;
+					case 1:
+						res +=valor+"X";
+						break;
+					default:
+						res +=term;
+						break;
+					} 
+				}else{
+					switch(exponete){
+					case 0:
+						if (i!=0){
+							res += "+"+valor;
+						}else{
+							res += valor;
+						}
+						break;
+					case 1:
+						if (i!=0){
+							res += "+"+valor+"X";
+						}else{
+							res += valor+"X";
+						}
+						break;
+					default:
+						if (i!=0){
+							res +="+"+term;
+						}else{
+							res +=term;
+						}
+						break;
+					} 					
+				}
+			break;
 			}
 			i++;
 		}
@@ -97,22 +146,23 @@ public class Polinomio {
 	}											  // EL MISMO EXPONETES PISA EL QUE YA HABIA ANTES CON EL ULTIMO
 
 	public Polinomio ordenarDec(Polinomio p) {
-		Vector<Termino> pol = p.gerTerminos();
+		Polinomio res = new Polinomio();
+		Vector<Termino> pol = (Vector<Termino>) (p.gerTerminos()).clone();
 		Vector<Termino> ord = new Vector<Termino>();
 		while (!pol.isEmpty()){
 			int i = 0;
-			Termino min = pol.elementAt(i);
-			while  (i<pol.size()-1){
-				if (min.getExponente()>pol.elementAt(i+1).getExponente()){
-					min = pol.elementAt(i+1);
+			Termino max = pol.elementAt(i);
+			while  (i<pol.size()-1){	//busca el maximo para ponerlo al principio
+				if (max.getExponente()<pol.elementAt(i+1).getExponente()){
+					max = pol.elementAt(i+1);
 				}
 				i++;
 			}
-			ord.addElement(min);
-			pol.remove(min);
+			ord.addElement(max);
+			pol.remove(max);		//saca el maximo de la lista para poder buscar el que lo sigue
 		}
-		p.setTerminos(ord);
-		return p;
+		res.setTerminos(ord);
+		return res;
 	}
 
 	public Polinomio completar(Polinomio p) {
@@ -185,7 +235,7 @@ public class Polinomio {
 		Polinomio pol = new Polinomio();
 		Polinomio aux = new Polinomio();
 		pol.makePolinomioFromFile(args[0]);
-		aux.completar(pol);
+		pol=aux.ordenarDec(pol);
 		pol.verPolinomio();
 	}
 }

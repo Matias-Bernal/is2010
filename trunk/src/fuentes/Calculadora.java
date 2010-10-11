@@ -3,7 +3,7 @@ package fuentes;
 import java.util.Vector;
 
 public class Calculadora {
- 
+
 	public Polinomio suma(Polinomio p, Polinomio q) {
 		Polinomio cal = new Polinomio();
 		if (cal.grado(p)<cal.grado(q)){
@@ -37,7 +37,7 @@ public class Calculadora {
 		cal.setTerminos(resultado);
 		return cal;
 	}
-	 
+
 	public Polinomio resta(Polinomio p, Polinomio q) {
 		Polinomio cal = new Polinomio();
 		if (cal.grado(p)<cal.grado(q)){
@@ -75,31 +75,37 @@ public class Calculadora {
 		cal.setTerminos(resultado);
 		return cal;
 	}
-	 
+
 	public Polinomio producto(Polinomio p, Polinomio q) {		
 		return null;
 	}
-	 
+
 	public Polinomio cociente(Polinomio p, Polinomio q) {
 		Polinomio coc = new Polinomio();
 		if (esPosibleRuffini(p,q)){
-			
-			return coc; // hacerlo por ruffini
+			coc = cocienteRuffini(p,q);
+			return coc;
 		}
 		else{
 			
 			return coc; //hacerlo de otra forma
 		}
 	}
-	 
+
 	public Polinomio cocienteRuffini(Polinomio p, Polinomio q) {
 		return null;
 	}
-	 
+
 	public boolean esPosibleRuffini(Polinomio p, Polinomio q) {
-		return true;
+		Polinomio binomio = new Polinomio();
+		binomio = q;
+		boolean grado = true;
+		boolean valor = true;
+		grado =(q.grado(binomio)==1);
+		valor =((q.ordenarDec(binomio).gerTerminos().firstElement().getValor())==1);
+		return grado&&valor;
 	}
-	 
+
 	public static void main(String[] args){
 		Calculadora calculadora = new Calculadora();
 		Polinomio p1 = new Polinomio();
