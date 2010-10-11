@@ -9,10 +9,15 @@ public class Calculadora {
 		if (cal.grado(p)<cal.grado(q)){
 			p.addTermPolinomio(0, cal.grado(q));
 			p = cal.completar(p);
+			q = cal.completar(q);
 		}else{
 			if (cal.grado(p)>cal.grado(q)){
 				q.addTermPolinomio(0, cal.grado(p));
-				q = cal.completar(q);				
+				q = cal.completar(q);
+				p = cal.completar(p);
+			}else{
+				q = cal.completar(q);
+				p = cal.completar(p);				
 			}
 		}
 		int i = 0;
@@ -77,7 +82,35 @@ public class Calculadora {
 	}
 
 	public Polinomio producto(Polinomio p, Polinomio q) {		
-		return null;
+		Polinomio total = new Polinomio();
+		Vector<Termino> terminos = new Vector<Termino>();
+		Vector<Termino> multiplicando = new Vector<Termino>(p.gerTerminos());
+		Vector<Termino> multiplicador = new Vector<Termino>(q.gerTerminos());		
+		Termino terminoResultante = new Termino();
+
+		terminoResultante.setExponente(0);
+		terminoResultante.setValor(0);
+		terminos.add(terminoResultante);
+		total.setTerminos(terminos);
+		int i = 0;
+		while(i<multiplicando.size()){
+			Polinomio resultado = new Polinomio();
+			Termino termMultiplicando = multiplicando.elementAt(i);
+			Vector<Termino> terminosProducto = new Vector<Termino>();
+			int j=0;
+			while (j<multiplicador.size()){
+				Termino terminoResul = new Termino();
+				Termino termMultiplicador = multiplicador.elementAt(j);
+				terminoResul.setValor(termMultiplicando.getValor()*termMultiplicador.getValor());
+				terminoResul.setExponente(termMultiplicando.getExponente()+termMultiplicador.getExponente());
+				terminosProducto.add(terminoResul);
+				j++;
+			}
+			resultado.setTerminos(terminosProducto);
+			total = suma(total,resultado);
+			i++;
+		}
+		return total;
 	}
 
 	public Polinomio cociente(Polinomio p, Polinomio q) {
@@ -116,9 +149,9 @@ public class Calculadora {
 		calculadora.suma(p1, p2).verPolinomio();
 		System.out.println("resta: ");
 		calculadora.resta(p1, p2).verPolinomio();
-		/*System.out.println("producto");
-		calculadora.producto(p1, p2).verPolinomio();
-		System.out.println("cociente");
-		calculadora.cociente(p1, p2).verPolinomio();*/
+		System.out.println("producto");
+		p1.ordenarDec(calculadora.producto(p1, p2)).verPolinomio();
+		//System.out.println("cociente");
+		//calculadora.cociente(p1, p2).verPolinomio();*/
 	}
 }

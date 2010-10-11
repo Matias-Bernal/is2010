@@ -5,9 +5,9 @@ import java.util.*;
 
 
 public class Polinomio {
- 
+
 	private Vector<Termino> terminos;
-	
+
 	public Polinomio() {
 		terminos = new Vector<Termino>();
 	}
@@ -147,7 +147,7 @@ public class Polinomio {
 
 	public Polinomio ordenarDec(Polinomio p) {
 		Polinomio res = new Polinomio();
-		Vector<Termino> pol = (Vector<Termino>) (p.gerTerminos()).clone();
+		Vector<Termino> pol = new Vector<Termino>(p.gerTerminos());
 		Vector<Termino> ord = new Vector<Termino>();
 		while (!pol.isEmpty()){
 			int i = 0;
@@ -170,13 +170,26 @@ public class Polinomio {
 		if (!estaOrdenado(polinomio)){
 			ordenarDec(polinomio);
 		}
-		Vector<Termino> pol = polinomio.gerTerminos();
+		Vector<Termino> pol = new Vector<Termino>(polinomio.gerTerminos());
+		Vector<Termino> correcion = new Vector<Termino>();
 		int i = 0;
+		boolean corregido = true;
 		int exponente1;
 		int exponente2;
 		while (i < pol.size()-1){
 			exponente1 = pol.elementAt(i).getExponente();
 			exponente2 = pol.elementAt(i+1).getExponente();
+			if ((corregido)&&(0<pol.firstElement().getExponente())){
+				int j = 0;
+				while(j<exponente1){
+					Termino ter = new Termino();
+					ter.setValor(0);
+					ter.setExponente(j);
+					correcion.insertElementAt(ter,j);
+					j++;
+				}
+				corregido=false;
+			}
 			while (exponente1+1!=exponente2){
 				Termino ter = new Termino();
 				ter.setValor(0);
@@ -186,7 +199,8 @@ public class Polinomio {
 			}
 			i++;
 		}
-		polinomio.setTerminos(pol);
+		correcion.addAll(pol);
+		polinomio.setTerminos(correcion);
 		return polinomio;
 	}
 
