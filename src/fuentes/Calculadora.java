@@ -155,27 +155,40 @@ public class Calculadora {
 		}
 	}
 
-	public Polinomio cocienteRuffini(Polinomio p, Polinomio q) {
-		p.ordenarDec(p);// ordenamos el polinomio
+	public Polinomio cocienteRuffini(Polinomio r, Polinomio s) {
+		Polinomio p = new Polinomio();
+		p.setTerminos(r.gerTerminos());
+		Polinomio q = new Polinomio();
+		q.setTerminos(s.gerTerminos());
+		p = p.ordenarDec(p);// ordenamos el polinomio
+		q = q.ordenarDec(q);
+		p.verPolinomio();
 		Vector <Termino> aux = q.gerTerminos(); // pasamos el polinomio a un vector para manipularlo mejor
-		int cantCol = p.grado(p)+1; // sacamos la cantidad de terminos que tiene el dividendo para saber cuantas columnas tendria la tabla
-		int divisor = aux.get(aux.size()).getValor(); // sacamos el divisor
-		Vector<Termino> filaUno = p.gerTerminos();
-		Vector <Integer> filaDos = new Vector <Integer> (p.grado(p)); 
-		Vector <Integer> filaTres = new Vector <Integer> (p.grado(p));
-		int auxElem = 0;
+		Integer cantCol = p.grado(p); // sacamos la cantidad de terminos que tiene el dividendo para saber cuantas columnas tendria la tabla
+		Integer divisor = aux.lastElement().getValor(); // sacamos el divisor
+		
+		Vector  <Termino> filaUno = p.gerTerminos();
+		Vector  <Integer> filaDos = new Vector  <Integer>(cantCol) ; 
+		Vector  <Integer> filaTres =new Vector  <Integer> (cantCol);
+		
+		Integer auxElem = 0;
+		System.out.println(cantCol);
 		for (int i = 0;i <= cantCol; i++){
-			filaDos.add(i,divisor * auxElem);
-			filaTres.add(i, filaUno.get(i).getValor() + filaDos.get(i).intValue());
-			auxElem = filaTres.get(i);
+			Integer a = new Integer((divisor).intValue() * (auxElem).intValue());
+			filaDos.add(i,a);
+			filaTres.insertElementAt(filaUno.get(i).getValor() + filaDos.elementAt(i),i) ;
+			auxElem = new Integer( filaTres.get(i));
+			System.out.println(auxElem);
 		}
+		
 		// el resultado esta en la fila 3
 		Polinomio res = new Polinomio();
 		for (int j =0 ; j<= cantCol; j++ ){
-			if (!(filaTres.get(j) == 0)){
-				res.addTermPolinomio(j,filaTres.get(j));
+		if (!(filaTres.get(j) == 0)){
+				res.addTermPolinomio(filaTres.elementAt(j),j);
 			}
 		}
+			
 		return res;
 	}
 
@@ -195,13 +208,6 @@ public class Calculadora {
 		Polinomio p2 = new Polinomio();
 		p1.makePolinomioFromFile(args[0]);
 		p2.makePolinomioFromFile(args[1]);
-		System.out.println("suma: ");
-		(p1.ordenarDec(calculadora.suma(p1, p2))).verPolinomio();
-		System.out.println("resta: ");
-		(p1.ordenarDec(calculadora.resta(p1, p2))).verPolinomio();
-		System.out.println("producto");
-		(p1.ordenarDec(calculadora.producto(p1, p2))).verPolinomio();
-		System.out.println("cociente");
-		(p1.ordenarDec(calculadora.cociente(p1, p2))).verPolinomio();
+		calculadora.cocienteRuffini(p1, p2).verPolinomio();
 	}
 }
