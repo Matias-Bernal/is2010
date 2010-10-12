@@ -62,9 +62,6 @@ public class Calculadora {
 				q.addTermPolinomio(0, cal.grado(p));
 				q = cal.completar(q);
 				p = cal.completar(p);
-			}else{
-				q = cal.completar(q);
-				p = cal.completar(p);				
 			}
 		}
 		int i = 0;
