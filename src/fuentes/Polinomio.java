@@ -168,39 +168,44 @@ public class Polinomio {
 	public Polinomio completar(Polinomio p) {
 		Polinomio polinomio = p;
 		if (!estaOrdenado(polinomio)){
-			ordenarDec(polinomio);
+			polinomio=ordenarDec(polinomio);
 		}
-		Vector<Termino> pol = new Vector<Termino>(polinomio.gerTerminos());
-		Vector<Termino> correcion = new Vector<Termino>();
+		int grado = polinomio.grado(polinomio);
 		int i = 0;
-		boolean corregido = true;
-		int exponente1;
-		int exponente2;
-		while (i < pol.size()-1){
-			exponente1 = pol.elementAt(i).getExponente();
-			exponente2 = pol.elementAt(i+1).getExponente();
-			if ((corregido)&&(0<pol.firstElement().getExponente())){
-				int j = 0;
-				while(j<exponente1){
-					Termino ter = new Termino();
-					ter.setValor(0);
-					ter.setExponente(j);
-					correcion.insertElementAt(ter,j);
-					j++;
-				}
-				corregido=false;
-			}
-			while (exponente1+1!=exponente2){
-				Termino ter = new Termino();
-				ter.setValor(0);
-				exponente1++;
-				ter.setExponente(exponente1);
-				pol.insertElementAt(ter,exponente1);
+		int tamaño = 0;
+		Vector<Termino> terminos = polinomio.gerTerminos();
+		tamaño = terminos.size();
+		Termino[] term = new Termino[tamaño];
+		
+		while (i<terminos.size()){
+			term[i]= terminos.elementAt(i);
+			i++;
+		}
+		Termino[] correccion = new Termino[grado+1];
+		i = 0;
+		int exponete = 0;
+		while (i<term.length){
+			exponete = term[i].getExponente();
+			correccion[exponete] = term[i];
+			i++;
+		}
+		i=0;
+		while (i<grado+1){
+			if (correccion[i]==null){
+				Termino monomio = new Termino();
+				monomio.setExponente(i);
+				correccion[i]= monomio;
 			}
 			i++;
 		}
-		correcion.addAll(pol);
-		polinomio.setTerminos(correcion);
+		Vector<Termino> correc = new Vector<Termino>();
+		i=0;
+		tamaño = correccion.length-1;
+		while(i<correccion.length){
+			correc.add(correccion[tamaño-i]);
+			i++;
+		}
+		polinomio.setTerminos(correc);
 		return polinomio;
 	}
 
@@ -213,7 +218,7 @@ public class Polinomio {
 		while ((i < pol.size()-1) && ordenado){
 			termino1 = pol.elementAt(i).getExponente();
 			termino2 = pol.elementAt(i+1).getExponente();
-			ordenado = ordenado && (termino1<=termino2);
+			ordenado = ordenado && (termino1>=termino2);
 			i++;
 		}
 		return ordenado;
@@ -222,9 +227,9 @@ public class Polinomio {
 	public int grado(Polinomio p) {
 		Polinomio polinomio = p;
 		if (!estaOrdenado(polinomio)){
-			ordenarDec(polinomio);
+			polinomio=ordenarDec(polinomio);
 		}
-		return polinomio.gerTerminos().lastElement().getExponente();
+		return polinomio.gerTerminos().firstElement().getExponente();
 	}
 
 	private int indexOf(int exponente) {
@@ -243,8 +248,18 @@ public class Polinomio {
 	public void setTerminos(Vector<Termino> terminos){
 		this.terminos=terminos;
 	}
-
-
+	public void corregirPolinomio(){
+		int i = 0;
+		boolean fin = false;
+		while((i<terminos.size()-1)&&(!fin)){
+			if (terminos.elementAt(i).getValor()==0){
+				terminos.remove(i);
+			}else{
+				fin = true;
+			}
+			i++;
+		}
+	}
 	public static void main(String[] args){
 		Polinomio pol = new Polinomio();
 		Polinomio aux = new Polinomio();

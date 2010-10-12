@@ -4,7 +4,11 @@ import java.util.Vector;
 
 public class Calculadora {
 
-	public Polinomio suma(Polinomio p, Polinomio q) {
+	public Polinomio suma(Polinomio sum1, Polinomio sum2) {
+		Polinomio p = new Polinomio();
+		p.setTerminos(new Vector<Termino>(sum1.gerTerminos()));
+		Polinomio q = new Polinomio();
+		q.setTerminos(new Vector<Termino>(sum2.gerTerminos()));
 		Polinomio cal = new Polinomio();
 		if (cal.grado(p)<cal.grado(q)){
 			p.addTermPolinomio(0, cal.grado(q));
@@ -43,15 +47,24 @@ public class Calculadora {
 		return cal;
 	}
 
-	public Polinomio resta(Polinomio p, Polinomio q) {
+	public Polinomio resta(Polinomio min, Polinomio sus) {
+		Polinomio p = new Polinomio();
+		p.setTerminos(new Vector<Termino>(min.gerTerminos()));
+		Polinomio q = new Polinomio();
+		q.setTerminos(new Vector<Termino>(sus.gerTerminos()));
 		Polinomio cal = new Polinomio();
 		if (cal.grado(p)<cal.grado(q)){
 			p.addTermPolinomio(0, cal.grado(q));
 			p = cal.completar(p);
+			q = cal.completar(q);
 		}else{
 			if (cal.grado(p)>cal.grado(q)){
 				q.addTermPolinomio(0, cal.grado(p));
-				q = cal.completar(q);				
+				q = cal.completar(q);
+				p = cal.completar(p);
+			}else{
+				q = cal.completar(q);
+				p = cal.completar(p);				
 			}
 		}
 		int i = 0;
@@ -78,6 +91,7 @@ public class Calculadora {
 			i++;
 		}
 		cal.setTerminos(resultado);
+		cal.corregirPolinomio();
 		return cal;
 	}
 
@@ -114,19 +128,37 @@ public class Calculadora {
 	}
 
 	public Polinomio cociente(Polinomio p, Polinomio q) {
-		Polinomio coc = new Polinomio();
-		if (esPosibleRuffini(p,q)){
-			coc = cocienteRuffini(p,q);
-			return coc;
+		Polinomio cociente = new Polinomio();
+		
+		Polinomio dividendo = new Polinomio();
+		dividendo.setTerminos(new Vector<Termino>(p.gerTerminos()));
+		Polinomio divisor = new Polinomio();
+		divisor.setTerminos(new Vector<Termino>(q.gerTerminos()));
+		divisor.corregirPolinomio();
+		if (esPosibleRuffini(dividendo,divisor)){
+			cociente = cocienteRuffini(p,q);
+			return cociente;
 		}
 		else{
-			
-			return coc; //hacerlo de otra forma
+			dividendo = dividendo.ordenarDec(dividendo.completar(dividendo));
+			dividendo.corregirPolinomio();
+			divisor = divisor.ordenarDec(divisor);
+			divisor.corregirPolinomio();
+			while (!(dividendo.grado(dividendo)<divisor.grado(divisor))) {
+				Polinomio monomio = new Polinomio();
+				Polinomio aux = new Polinomio();
+				Termino gradoDivisor = divisor.gerTerminos().firstElement();
+				Termino gradoDividendo = dividendo.gerTerminos().firstElement();
+				monomio.addTermPolinomio(gradoDividendo.getValor()/gradoDivisor.getValor(),gradoDividendo.getExponente()-gradoDivisor.getExponente());
+				cociente.addTermPolinomio(gradoDividendo.getValor()/gradoDivisor.getValor(),gradoDividendo.getExponente()-gradoDivisor.getExponente());
+				aux = producto(monomio,divisor);
+				dividendo = resta(dividendo,aux);
+			}
+			return cociente;
 		}
 	}
 
 	public Polinomio cocienteRuffini(Polinomio p, Polinomio q) {
-		
 		p.ordenarDec(p);// ordenamos el polinomio
 		Vector <Termino> aux = q.gerTerminos(); // pasamos el polinomio a un vector para manipularlo mejor
 		int cantCol = p.grado(p)+1; // sacamos la cantidad de terminos que tiene el dividendo para saber cuantas columnas tendria la tabla
@@ -134,23 +166,19 @@ public class Calculadora {
 		Vector<Termino> filaUno = p.gerTerminos();
 		Vector <Integer> filaDos = new Vector <Integer> (p.grado(p)); 
 		Vector <Integer> filaTres = new Vector <Integer> (p.grado(p));
-		
 		int auxElem = 0;
 		for (int i = 0;i <= cantCol; i++){
 			filaDos.add(i,divisor * auxElem);
 			filaTres.add(i, filaUno.get(i).getValor() + filaDos.get(i).intValue());
 			auxElem = filaTres.get(i);
 		}
-		
 		// el resultado esta en la fila 3
-		
 		Polinomio res = new Polinomio();
 		for (int j =0 ; j<= cantCol; j++ ){
 			if (!(filaTres.get(j) == 0)){
 				res.addTermPolinomio(j,filaTres.get(j));
 			}
 		}
-			
 		return res;
 	}
 
@@ -171,12 +199,12 @@ public class Calculadora {
 		p1.makePolinomioFromFile(args[0]);
 		p2.makePolinomioFromFile(args[1]);
 		System.out.println("suma: ");
-		calculadora.suma(p1, p2).verPolinomio();
+		(p1.ordenarDec(calculadora.suma(p1, p2))).verPolinomio();
 		System.out.println("resta: ");
-		calculadora.resta(p1, p2).verPolinomio();
+		(p1.ordenarDec(calculadora.resta(p1, p2))).verPolinomio();
 		System.out.println("producto");
-		p1.ordenarDec(calculadora.producto(p1, p2)).verPolinomio();
-		//System.out.println("cociente");
-		//calculadora.cociente(p1, p2).verPolinomio();*/
+		(p1.ordenarDec(calculadora.producto(p1, p2))).verPolinomio();
+		System.out.println("cociente");
+		(p1.ordenarDec(calculadora.cociente(p1, p2))).verPolinomio();
 	}
 }
