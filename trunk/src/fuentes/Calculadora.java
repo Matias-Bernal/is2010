@@ -62,6 +62,9 @@ public class Calculadora {
 				q.addTermPolinomio(0, cal.grado(p));
 				q = cal.completar(q);
 				p = cal.completar(p);
+			}else{
+				q = cal.completar(q);
+				p = cal.completar(p);				
 			}
 		}
 		int i = 0;
@@ -126,7 +129,6 @@ public class Calculadora {
 
 	public Polinomio cociente(Polinomio p, Polinomio q) {
 		Polinomio cociente = new Polinomio();
-		
 		Polinomio dividendo = new Polinomio();
 		dividendo.setTerminos(new Vector<Termino>(p.gerTerminos()));
 		Polinomio divisor = new Polinomio();
@@ -155,57 +157,49 @@ public class Calculadora {
 		}
 	}
 
-	public Polinomio cocienteRuffini(Polinomio r, Polinomio s) {
-		Polinomio p = new Polinomio();
-		p.verPolinomio();
-		p.setTerminos(r.gerTerminos());
-		Polinomio q = new Polinomio();
-		q.setTerminos(s.gerTerminos());
-		//p = p.ordenarDec(p);// ordenamos el polinomio
-		q = q.ordenarDec(q);
-		p.verPolinomio();
-		p = p.completar(p);
-		p.verPolinomio();
-		Vector <Termino> aux = q.gerTerminos(); // pasamos el polinomio a un vector para manipularlo mejor
-		Integer cantCol = p.grado(p)+1; // sacamos la cantidad de terminos que tiene el dividendo para saber cuantas columnas tendria la tabla
-		Integer divisor = aux.lastElement().getValor(); // sacamos el divisor
+
+	public Polinomio cocienteRuffini(Polinomio p, Polinomio q) {
+		Polinomio dividendo = new Polinomio();
+		dividendo.setTerminos(p.gerTerminos());
+		Polinomio divisor = new Polinomio();
+		divisor.setTerminos(q.gerTerminos());
 		
-		Vector  <Termino> filaUno = p.gerTerminos();
+		dividendo = dividendo.completar(dividendo);
+		dividendo= dividendo.ordenarDec(dividendo);// ordenamos el polinomio
+		divisor = divisor.ordenarDec(divisor);
+
+		Vector <Termino> aux = divisor.gerTerminos(); // pasamos el polinomio a un vector para manipularlo mejor
+		Integer cantCol = dividendo.grado(dividendo); // sacamos la cantidad de terminos que tiene el dividendo para saber cuantas columnas tendria la tabla
+		Integer divisorA = Math.abs(aux.lastElement().getValor()); // sacamos el termino independiente del divisor
+		
+		Vector  <Termino> filaUno = dividendo.gerTerminos();
 		Vector  <Integer> filaDos = new Vector  <Integer>(cantCol) ; 
 		Vector  <Integer> filaTres =new Vector  <Integer> (cantCol);
 		
 		Integer auxElem = 0;
-		System.out.println(cantCol);
-		for (int i = 0;i < cantCol; i++){
-			Integer a = new Integer((divisor).intValue() * (auxElem).intValue());
+		for (int i = 0;i <= cantCol; i++){
+			Integer a = new Integer(divisorA * auxElem);
 			filaDos.add(i,a);
-			filaTres.insertElementAt(filaUno.get(i).getValor() + filaDos.elementAt(i),i) ;
-			auxElem = new Integer( filaTres.get(i));
+			filaTres.add(i,filaUno.get(i).getValor() + filaDos.elementAt(i)) ;
+			auxElem = new Integer(filaTres.get(i));
 		}
 		
-		// armamos res dede el vector fila3
 		Polinomio res = new Polinomio();
-		int i = 0;
-		int j = cantCol-1;
-		while  (i < cantCol && j >= 0){
-			if (!(filaTres.get(i) == 0)){
-				res.addTermPolinomio(filaTres.elementAt(i),j);
-				j--;
-				i++;
+		for (int i=0 ; i<=cantCol-1; i++ ){
+		if (!(filaTres.get(i) == 0)){
+				res.addTermPolinomio(filaTres.elementAt(i),cantCol-1-i);
 			}
 		}
-			
 		return res;
 	}
 
-
-	public boolean esPosibleRuffini(Polinomio p, Polinomio q) {
+	public static boolean esPosibleRuffini(Polinomio p, Polinomio q) {
 		Polinomio binomio = new Polinomio();
-		binomio = q;
+		binomio.setTerminos(q.gerTerminos());
 		boolean grado = true;
 		boolean valor = true;
-		grado =(q.grado(binomio)==1);
-		valor =((q.ordenarDec(binomio).gerTerminos().firstElement().getValor())==1);
+		grado =(binomio.grado(binomio)==1);
+		valor =((binomio.ordenarDec(binomio).gerTerminos().firstElement().getValor())==1);
 		return grado&&valor;
 	}
 
@@ -215,6 +209,13 @@ public class Calculadora {
 		Polinomio p2 = new Polinomio();
 		p1.makePolinomioFromFile(args[0]);
 		p2.makePolinomioFromFile(args[1]);
-		calculadora.cocienteRuffini(p1, p2).verPolinomio();
+		System.out.println("la suma es:");
+		p1.ordenarDec(calculadora.suma(p1, p2)).verPolinomio();
+		System.out.println("la resta es:");
+		p1.ordenarDec(calculadora.resta(p1, p2)).verPolinomio();
+		System.out.println("el producto es:");
+		p1.ordenarDec(calculadora.producto(p1, p2)).verPolinomio();
+		System.out.println("el cociente es:");
+		p1.ordenarDec(calculadora.cociente(p1, p2)).verPolinomio();
 	}
 }
