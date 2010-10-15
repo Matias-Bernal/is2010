@@ -22,7 +22,7 @@ public class Polinomio {
 				for(int i = 0; i < datos.length; i++) {
 					String valorexponete = new String(datos[i]);
 
-					int valor = Integer.parseInt(valorexponete.substring(0, valorexponete.indexOf("^")));
+					float valor = Integer.parseInt(valorexponete.substring(0, valorexponete.indexOf("^")));
 					int exponete = Integer.parseInt(valorexponete.substring(valorexponete.indexOf("^")+1, valorexponete.length()));
 					
 					addTermPolinomio(valor,exponete);
@@ -41,7 +41,7 @@ public class Polinomio {
 
 	public void verPolinomio(){
 		int i = 0;
-		int valor = 0;
+		float valor = 0;
 		int exponete = 0;
 		String res = "";
 		Termino term = new Termino();
@@ -49,9 +49,8 @@ public class Polinomio {
 			term = terminos.elementAt(i);
 			exponete = term.getExponente();
 			valor = term.getValor();
-			switch (valor){
-			case 0:	break;
-			case 1:
+			
+			if (valor == 1) {
 				switch(exponete){
 				case 0:
 					if (i!=0){
@@ -75,8 +74,7 @@ public class Polinomio {
 					}
 					break;
 				}
-				break;
-			case -1:
+			} else if (valor == -1) {
 				switch(exponete){
 				case 0:
 					res += valor;
@@ -89,7 +87,7 @@ public class Polinomio {
 					break;
 				}
 				break;
-			default:
+			}else{
 				if(valor<-1){
 					switch(exponete){
 					case 0:
@@ -127,14 +125,13 @@ public class Polinomio {
 						break;
 					} 					
 				}
-			break;
 			}
 			i++;
 		}
 		System.out.println(res);
 	}
 
-	public void addTermPolinomio(int v, int e){
+	public void addTermPolinomio(float v, int e){
 		Termino termino = new Termino();
 		termino.setValor(v);
 		termino.setExponente(e);
