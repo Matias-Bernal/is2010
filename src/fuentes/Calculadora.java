@@ -157,40 +157,47 @@ public class Calculadora {
 
 	public Polinomio cocienteRuffini(Polinomio r, Polinomio s) {
 		Polinomio p = new Polinomio();
+		p.verPolinomio();
 		p.setTerminos(r.gerTerminos());
 		Polinomio q = new Polinomio();
 		q.setTerminos(s.gerTerminos());
-		p = p.ordenarDec(p);// ordenamos el polinomio
+		//p = p.ordenarDec(p);// ordenamos el polinomio
 		q = q.ordenarDec(q);
 		p.verPolinomio();
+		p = p.completar(p);
+		p.verPolinomio();
 		Vector <Termino> aux = q.gerTerminos(); // pasamos el polinomio a un vector para manipularlo mejor
-		Integer cantCol = p.grado(p); // sacamos la cantidad de terminos que tiene el dividendo para saber cuantas columnas tendria la tabla
-		Float divisor = aux.lastElement().getValor(); // sacamos el divisor
+		Integer cantCol = p.grado(p)+1; // sacamos la cantidad de terminos que tiene el dividendo para saber cuantas columnas tendria la tabla
+		Integer divisor = aux.lastElement().getValor(); // sacamos el divisor
 		
 		Vector  <Termino> filaUno = p.gerTerminos();
-		Vector  <Float> filaDos = new Vector  <Float>(cantCol) ; 
-		Vector  <Float> filaTres =new Vector  <Float> (cantCol);
+		Vector  <Integer> filaDos = new Vector  <Integer>(cantCol) ; 
+		Vector  <Integer> filaTres =new Vector  <Integer> (cantCol);
 		
-		Float auxElem = 0f;
+		Integer auxElem = 0;
 		System.out.println(cantCol);
-		for (int i = 0;i <= cantCol; i++){
-			Float a = new Float((divisor).intValue() * (auxElem).intValue());
+		for (int i = 0;i < cantCol; i++){
+			Integer a = new Integer((divisor).intValue() * (auxElem).intValue());
 			filaDos.add(i,a);
 			filaTres.insertElementAt(filaUno.get(i).getValor() + filaDos.elementAt(i),i) ;
-			auxElem = new Float( filaTres.get(i));
-			System.out.println(auxElem);
+			auxElem = new Integer( filaTres.get(i));
 		}
 		
-		// el resultado esta en la fila 3
+		// armamos res dede el vector fila3
 		Polinomio res = new Polinomio();
-		for (int j =0 ; j<= cantCol; j++ ){
-		if (!(filaTres.get(j) == 0)){
-				res.addTermPolinomio(filaTres.elementAt(j),j);
+		int i = 0;
+		int j = cantCol-1;
+		while  (i < cantCol && j >= 0){
+			if (!(filaTres.get(i) == 0)){
+				res.addTermPolinomio(filaTres.elementAt(i),j);
+				j--;
+				i++;
 			}
 		}
 			
 		return res;
 	}
+
 
 	public boolean esPosibleRuffini(Polinomio p, Polinomio q) {
 		Polinomio binomio = new Polinomio();
