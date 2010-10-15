@@ -1,14 +1,20 @@
 package fuentes;
 
+import java.text.DecimalFormat;
+
 public class Termino{
-	private int valor;
+	private float valor;
 	private int exponente;
 
-	public int getValor() {
+	public float getValor() {
 		return valor;
 	}
 
-	public void setValor(int v) {
+	/*public void setValor(int v) {
+		valor = v;
+	}*/
+	
+	public void setValor(float v) {
 		valor = v;
 	}
 
@@ -21,10 +27,12 @@ public class Termino{
 	}
 
 	public String toString(){
+		DecimalFormat df = new DecimalFormat();
+		df.applyPattern("#0.00");
 		if (valor>=0){
-			return (valor+"X"+"^"+exponente);
+			return (df.format(valor)+"X"+"^"+exponente);
 		}else{
-			return (valor+"X"+"^"+exponente);
+			return (df.format(valor)+"X"+"^"+exponente);
 		}
 	}
 }

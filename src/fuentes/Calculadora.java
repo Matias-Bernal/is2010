@@ -165,19 +165,19 @@ public class Calculadora {
 		p.verPolinomio();
 		Vector <Termino> aux = q.gerTerminos(); // pasamos el polinomio a un vector para manipularlo mejor
 		Integer cantCol = p.grado(p); // sacamos la cantidad de terminos que tiene el dividendo para saber cuantas columnas tendria la tabla
-		Integer divisor = aux.lastElement().getValor(); // sacamos el divisor
+		Float divisor = aux.lastElement().getValor(); // sacamos el divisor
 		
 		Vector  <Termino> filaUno = p.gerTerminos();
-		Vector  <Integer> filaDos = new Vector  <Integer>(cantCol) ; 
-		Vector  <Integer> filaTres =new Vector  <Integer> (cantCol);
+		Vector  <Float> filaDos = new Vector  <Float>(cantCol) ; 
+		Vector  <Float> filaTres =new Vector  <Float> (cantCol);
 		
-		Integer auxElem = 0;
+		Float auxElem = 0f;
 		System.out.println(cantCol);
 		for (int i = 0;i <= cantCol; i++){
-			Integer a = new Integer((divisor).intValue() * (auxElem).intValue());
+			Float a = new Float((divisor).intValue() * (auxElem).intValue());
 			filaDos.add(i,a);
 			filaTres.insertElementAt(filaUno.get(i).getValor() + filaDos.elementAt(i),i) ;
-			auxElem = new Integer( filaTres.get(i));
+			auxElem = new Float( filaTres.get(i));
 			System.out.println(auxElem);
 		}
 		
