@@ -1,9 +1,19 @@
 package fuentes;
 
 import java.util.Vector;
-
+/**
+ * @author Bernal - Odorizzi - Bressan - Jaule.
+ * Clase que contiene las operaciones necesarias para realizar suma, resta multiplicacion y division de polinomios. 
+ */
 public class Calculadora {
-
+	
+	/** 
+	 * suma()
+	 * Metodo que realiza la suma de dos polinomios.
+	 * @param sum1 primer sumando.
+	 * @param sum2 segundo sumando.
+	 * @return Polinomio represenatando el resultado de haber sumado los dos polinomios.
+	 */
 	public Polinomio suma(Polinomio sum1, Polinomio sum2) {
 		Polinomio p = new Polinomio();
 		p.setTerminos(new Vector<Termino>(sum1.gerTerminos()));
@@ -47,6 +57,13 @@ public class Calculadora {
 		return cal;
 	}
 
+	/** 
+	 * resta()
+	 * Metodo que realiza la resta de dos polinomios.
+	 * @param min representa al minuendo.
+	 * @param sus representa al sustraendo.
+	 * @return Polinomio represenatando el resultado de haber realizado la resta.
+	 */
 	public Polinomio resta(Polinomio min, Polinomio sus) {
 		Polinomio p = new Polinomio();
 		p.setTerminos(new Vector<Termino>(min.gerTerminos()));
@@ -94,7 +111,14 @@ public class Calculadora {
 		cal.corregirPolinomio();
 		return cal;
 	}
-
+	
+	/** 
+	 * producto()
+	 * Metodo que realiza la multiplicacion de dos polinomios.
+	 * @param p representa el primer factor.
+	 * @param q representa el segundo factor.
+	 * @return Polinomio represenatando el producto obtenido de haber multiplicado los factores.
+	 */
 	public Polinomio producto(Polinomio p, Polinomio q) {		
 		Polinomio total = new Polinomio();
 		Vector<Termino> terminos = new Vector<Termino>();
@@ -127,6 +151,13 @@ public class Calculadora {
 		return total;
 	}
 
+	/** 
+	 * division()
+	 * Metodo que realiza la division de dos polinomios.
+	 * @param p representa el dividendo.
+	 * @param q representa el divisor.
+	 * @return Polinomio represenatando el cociente obtenido de haber dividido los polinomios.
+	 */	
 	public Polinomio cociente(Polinomio p, Polinomio q) {
 		Polinomio cociente = new Polinomio();
 		Polinomio dividendo = new Polinomio();
@@ -157,7 +188,13 @@ public class Calculadora {
 		}
 	}
 
-
+	/** 
+	 * cocienteRuffini()
+	 * Metodo que realiza la multiplicacion de dos polinomios  traves del metodo de Ruffini.
+	 * @param p representa el dividendo.
+	 * @param q representa el divisor.
+	 * @return Polinomio represenatando el cociente obtenido de haber dividido los polinomios.
+	 */
 	public Polinomio cocienteRuffini(Polinomio p, Polinomio q) {
 		Polinomio dividendo = new Polinomio();
 		dividendo.setTerminos(p.gerTerminos());
@@ -193,6 +230,13 @@ public class Calculadora {
 		return res;
 	}
 
+	/** 
+	 * esPosibleRuffini()
+	 * Metodo que indica si es posible aplicar la regla de ruffini para dividir polinomios.
+	 * @param p representa el dividendo.
+	 * @param q representa el divisor.
+	 * @return True si es posible realizar la regla o False en caso contrario.
+	 */
 	public static boolean esPosibleRuffini(Polinomio p, Polinomio q) {
 		Polinomio binomio = new Polinomio();
 		binomio.setTerminos(q.gerTerminos());
@@ -203,6 +247,7 @@ public class Calculadora {
 		return grado&&valor;
 	}
 
+	//TODO borrar el main
 	public static void main(String[] args){
 		Calculadora calculadora = new Calculadora();
 		Polinomio p1 = new Polinomio();
