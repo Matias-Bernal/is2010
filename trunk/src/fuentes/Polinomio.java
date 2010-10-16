@@ -17,12 +17,15 @@ public class Polinomio {
             FileReader archivo = new FileReader(fileName);
             BufferedReader l = new BufferedReader(archivo);
             String lineaDelArchivo = l.readLine();
-			while ( lineaDelArchivo !=null) {
-				String[] datos = lineaDelArchivo.split(String.valueOf('\t')); 
+            
+            while ( lineaDelArchivo !=null) {
+				String[] datos = lineaDelArchivo.split(String.valueOf(' '));
+							
 				for(int i = 0; i < datos.length; i++) {
 					String valorexponete = new String(datos[i]);
 
 					int valor = Integer.parseInt(valorexponete.substring(0, valorexponete.indexOf("^")));
+					
 					int exponete = Integer.parseInt(valorexponete.substring(valorexponete.indexOf("^")+1, valorexponete.length()));
 					
 					addTermPolinomio(valor,exponete);
