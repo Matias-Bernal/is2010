@@ -20,7 +20,7 @@ public class Polinomio {
 
 	/**
 	* makePolinomioFromFile(String fileName): Setea el polinomio a partir de un polinomio que se encuentra escrito en un archivo.
-	* @param filName representa el nombre del archivo donde se encuentra el polinomio.
+	* @param fileName representa el nombre del archivo donde se encuentra el polinomio.
 	*/
 	public void makePolinomioFromFile(String fileName) {
 		try {
@@ -29,7 +29,7 @@ public class Polinomio {
             String lineaDelArchivo = l.readLine();
             
             while ( lineaDelArchivo !=null) {
-				String[] datos = lineaDelArchivo.split(String.valueOf(' '));
+				String[] datos = lineaDelArchivo.split(String.valueOf('\t'));
 							
 				for(int i = 0; i < datos.length; i++) {
 					String valorexponete = new String(datos[i]);
